@@ -15,14 +15,12 @@ public abstract class Workout {
         setCaloriesBurned(caloriesBurned);
     }
 
-    // Абстрактный метод (требование PDF)
     public abstract void startSession();
 
     public String getDetails() {
         return "ID: " + id + " | " + workoutName + " (" + durationMinutes + " mins)";
     }
 
-    // Сеттеры с валидацией (требование PDF)
     public void setId(int id) { this.id = id; }
 
     public void setWorkoutName(String workoutName) throws GymException {

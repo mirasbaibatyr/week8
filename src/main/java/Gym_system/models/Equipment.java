@@ -21,7 +21,6 @@ public class Equipment implements Maintainable {
         this.name = name;
     }
 
-    // Реализация методов интерфейса Maintainable
     @Override
     public void performMaintenance() {
         System.out.println("Maintenance performed on " + name + ". Condition is now Excellent.");
