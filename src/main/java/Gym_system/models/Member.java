@@ -1,33 +1,31 @@
 package Gym_system.models;
 
-import Gym_system.exceptions.GymException;
-
 public class Member {
-    private int id;
+
+    private int memberId;
     private String name;
-    private int age;
-    private boolean active;
+    private String membershipType;
+    private double monthlyFee;
 
-    public Member(int id, String name, int age, boolean active) throws GymException {
-        this.id = id;
-        setName(name);
-        setAge(age);
-        this.active = active;
-    }
-
-    public int getId() { return id; }
-
-    public void setName(String name) throws GymException {
-        if (name == null || name.isEmpty()) throw new GymException("Name cannot be empty.");
+    public Member(int memberId, String name, String membershipType, double monthlyFee) {
+        this.memberId = memberId;
         this.name = name;
+        this.membershipType = membershipType;
+        this.monthlyFee = monthlyFee;
     }
 
-    public void setAge(int age) throws GymException {
-        if (age < 14) throw new GymException("Member must be at least 14 years old.");
-        this.age = age;
+    public String getName() {
+        return name;
     }
 
-    public String toString() {
-        return "Member{id=" + id + ", name='" + name + "', age=" + age + ", active=" + active + "}";
+    public String getMembershipType() {
+        return membershipType;
+    }
+
+    public double getMonthlyFee() {
+        return monthlyFee;
     }
 }
+
+
+

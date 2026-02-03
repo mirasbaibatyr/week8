@@ -1,8 +1,16 @@
-import Gym_system.menu.MenuManager;
+import database.MemberDAO;
+import Gym_system.models.Member;
 
 public class Main {
+
     public static void main(String[] args) {
-        MenuManager menu = new MenuManager();
-        menu.run();
+
+        MemberDAO dao = new MemberDAO();
+
+        Member member =
+                new Member(0, "Alex", "Premium", 25000);
+
+        dao.insertMember(member);
+        dao.getAllMembers();
     }
 }
