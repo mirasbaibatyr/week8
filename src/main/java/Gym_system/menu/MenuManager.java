@@ -74,8 +74,9 @@ public class MenuManager implements Menu {
     private void addMember() throws GymException {
         System.out.print("Enter ID: "); int id = scanner.nextInt();
         System.out.print("Enter Name: "); String name = scanner.next();
-        System.out.print("Enter Age: "); int age = scanner.nextInt();
-        members.add(new Member(id, name, age, true));
+        System.out.print("Enter MembershipType: "); String membershipType = scanner.next();
+        System.out.print("Enter ID: "); double monthlyFee = scanner.nextInt();
+        members.add(new Member(id, name, membershipType, monthlyFee));
         System.out.println("Member added!");
     }
 

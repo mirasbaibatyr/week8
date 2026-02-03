@@ -8,7 +8,7 @@ public class Main {
         MemberDAO dao = new MemberDAO();
 
         Member member =
-                new Member(0, "Alex", "Premium", 25000);
+                new Member(1, "miko", "Premium", 27999);
 
         dao.insertMember(member);
         dao.getAllMembers();
