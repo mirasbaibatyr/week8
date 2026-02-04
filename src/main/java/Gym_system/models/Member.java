@@ -1,7 +1,6 @@
 package Gym_system.models;
 
 public class Member {
-
     private int memberId;
     private String name;
     private String membershipType;
@@ -14,18 +13,22 @@ public class Member {
         this.monthlyFee = monthlyFee;
     }
 
-    public String getName() {
-        return name;
+    public Member(String name, String membershipType, double monthlyFee) {
+        this.name = name;
+        this.membershipType = membershipType;
+        this.monthlyFee = monthlyFee;
     }
 
-    public String getMembershipType() {
-        return membershipType;
-    }
+    public int getMemberId() { return memberId; }
+    public String getName() { return name; }
+    public String getMembershipType() { return membershipType; }
+    public double getMonthlyFee() { return monthlyFee; }
 
-    public double getMonthlyFee() {
-        return monthlyFee;
+    @Override
+    public String toString() {
+        return "ID: " + memberId +
+                ", Name: " + name +
+                ", Type: " + membershipType +
+                ", Fee: " + monthlyFee;
     }
 }
-
-
-

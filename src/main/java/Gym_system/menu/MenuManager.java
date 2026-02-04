@@ -1,169 +1,126 @@
 package Gym_system.menu;
 
-import Gym_system.interfaces.Menu;
-import Gym_system.models.*;
-import Gym_system.exceptions.GymException;
+import database.MemberDAO;
+import Gym_system.models.Member;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
-public class MenuManager implements Menu {
-    private ArrayList<Member> members = new ArrayList<>();
-    private ArrayList<Trainers> trainers = new ArrayList<>();
-    private ArrayList<Equipment> equipmentList = new ArrayList<>();
-    private ArrayList<FitnessClass> classes = new ArrayList<>();
-    private ArrayList<Workout> workouts = new ArrayList<>();
-    private Scanner scanner = new Scanner(System.in);
+public class MenuManager {
 
-    @Override
-    public void displayMenu() {
-        System.out.println("\n--- Gym Management System ---");
-        System.out.println("1. Add Member");
-        System.out.println("2. View All Members");
-        System.out.println("3. Add Trainer");
-        System.out.println("4. View All Trainers");
-        System.out.println("5. Add Equipment");
-        System.out.println("6. View All Equipment");
-        System.out.println("7. Add Fitness Class");
-        System.out.println("8. View All Classes");
-        System.out.println("9. Add Cardio Workout");
-        System.out.println("10. Add Strength Workout");
-        System.out.println("11. View All Workouts");
-        System.out.println("0. Exit");
-        System.out.print("Enter choice: ");
-    }
+    private final Scanner scanner = new Scanner(System.in);
+    private final MemberDAO dao = new MemberDAO();
 
-    @Override
-    public void run() {
-        boolean running = true;
-        while (running) {
-            try {
-                displayMenu();
-                int choice = scanner.nextInt();
-                switch (choice) {
-                    case 1: addMember(); break;
-                    case 2: viewAllMembers(); break;
-                    case 3: addTrainer(); break;
-                    case 4: viewAllTrainers(); break;
-                    case 5: addEquipment(); break;
-                    case 6: viewAllEquipment(); break;
-                    case 7: addFitnessClass(); break;
-                    case 8: viewAllClasses(); break;
-                    case 9: addCardioWorkout(); break;
-                    case 10: addStrengthWorkout(); break;
-                    case 11: viewAllWorkouts(); break;
-                    case 0:
-                        System.out.println("Exiting system...");
-                        running = false;
-                        break;
-                    default:
-                        System.out.println("Invalid option.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Error: Please enter a number.");
-                scanner.next(); // Clear buffer
-            } catch (GymException e) {
-                System.out.println("Validation Error: " + e.getMessage());
-            } catch (Exception e) {
-                System.out.println("Unexpected Error: " + e.getMessage());
+    public void start() {
+        while (true) {
+            System.out.println("""
+                    
+                    ===== GYM MENU (Week 8) =====
+                    1. Add Member
+                    2. View All Members
+                    3. Update Member
+                    4. Delete Member
+                    5. Search Member by Name
+                    6. View Member by ID
+                    7. Dummy Option
+                    8. Dummy Option
+                    9. Dummy Option
+                    10. Dummy Option
+                    11. Dummy Option
+                    0. Exit
+                    """);
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1 -> addMember();
+                case 2 -> viewAll();
+                case 3 -> updateMember();
+                case 4 -> deleteMember();
+                case 5 -> searchByName();
+                case 6 -> viewById();
+                case 0 -> System.exit(0);
+                default -> System.out.println("Invalid option");
             }
         }
     }
 
-    private void addMember() throws GymException {
-        System.out.print("Enter ID: "); int id = scanner.nextInt();
-        System.out.print("Enter Name: "); String name = scanner.next();
-        System.out.print("Enter MembershipType: "); String membershipType = scanner.next();
-        System.out.print("Enter ID: "); double monthlyFee = scanner.nextInt();
-        members.add(new Member(id, name, membershipType, monthlyFee));
-        System.out.println("Member added!");
+    private void addMember() {
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Membership type: ");
+        String type = scanner.nextLine();
+        System.out.print("Monthly fee: ");
+        double fee = scanner.nextDouble();
+        scanner.nextLine();
+
+        dao.addMember(new Member(name, type, fee));
     }
 
-    private void viewAllMembers() {
-        for (Member m : members) System.out.println(m);
+    private void viewAll() {
+        dao.getAllMembers().forEach(System.out::println);
     }
 
-    private void addTrainer() throws GymException {
-        System.out.print("Enter ID: "); int id = scanner.nextInt();
-        System.out.print("Enter Name: "); String name = scanner.next();
-        System.out.print("Enter Specialization: "); String spec = scanner.next();
-        System.out.print("Enter Experience (years): "); int exp = scanner.nextInt();
-        trainers.add(new Trainers(id, name, spec, exp));
-        System.out.println("Trainer added!");
+    private void viewById() {
+        System.out.print("Enter ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println(dao.getMemberById(id));
     }
 
-    private void viewAllTrainers() {
-        for (Trainers t : trainers) System.out.println(t);
+    private void updateMember() {
+        System.out.print("Enter member ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        Member old = dao.getMemberById(id);
+        if (old == null) {
+            System.out.println("Member not found");
+            return;
+        }
+
+        System.out.println("Current: " + old);
+
+        System.out.print("New name: ");
+        String name = scanner.nextLine();
+        System.out.print("New type: ");
+        String type = scanner.nextLine();
+        System.out.print("New fee: ");
+        double fee = scanner.nextDouble();
+        scanner.nextLine();
+
+        dao.updateMember(new Member(id, name, type, fee));
     }
 
-    private void addEquipment() throws GymException {
-        System.out.print("Enter ID: "); int id = scanner.nextInt();
-        System.out.print("Enter Name: "); String name = scanner.next();
-        System.out.print("Enter Condition: "); String cond = scanner.next();
-        equipmentList.add(new Equipment(id, name, cond, true));
-        System.out.println("Equipment added!");
-    }
+    private void deleteMember() {
+        System.out.print("Enter member ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
 
-    private void viewAllEquipment() {
-        for (Equipment e : equipmentList) {
-            System.out.println(e);
-            if (e.needsMaintenance()) {
-                System.out.println("-> WARNING: Needs maintenance!");
-                e.performMaintenance();
-            }
+        Member m = dao.getMemberById(id);
+        if (m == null) {
+            System.out.println("Not found");
+            return;
+        }
+
+        System.out.println("Delete: " + m);
+        System.out.print("Are you sure? (yes/no): ");
+        String confirm = scanner.nextLine();
+
+        if (confirm.equalsIgnoreCase("yes")) {
+            dao.deleteMember(id);
+            System.out.println("Deleted");
+        } else {
+            System.out.println("Cancelled");
         }
     }
 
-    private void addFitnessClass() throws GymException {
-        if (trainers.isEmpty()) throw new GymException("No trainers available to assign.");
-        System.out.print("Enter ID: "); int id = scanner.nextInt();
-        System.out.print("Enter Class Name: "); String name = scanner.next();
-
-        System.out.println("Select Trainer ID:");
-        viewAllTrainers();
-        int tId = scanner.nextInt();
-        Trainers selected = null;
-        for (Trainers t : trainers) if (t.getId() == tId) selected = t;
-
-        if (selected == null) throw new GymException("Trainer not found.");
-
-        System.out.print("Enter Max Participants: "); int max = scanner.nextInt();
-        classes.add(new FitnessClass(id, name, selected, max));
-        System.out.println("Class added!");
-    }
-
-    private void viewAllClasses() {
-        for (FitnessClass f : classes) System.out.println(f);
-    }
-
-    private void addCardioWorkout() throws GymException {
-        System.out.print("Enter ID: "); int id = scanner.nextInt();
-        System.out.print("Name: "); String name = scanner.next();
-        System.out.print("Duration (mins): "); int dur = scanner.nextInt();
-        System.out.print("Calories: "); int cal = scanner.nextInt();
-        System.out.print("Speed (km/h): "); double speed = scanner.nextDouble();
-        System.out.print("Incline (0-15): "); int inc = scanner.nextInt();
-
-        CardioWorkout cw = new CardioWorkout(id, name, dur, cal, speed, inc);
-        workouts.add(cw);
-        cw.startSession();
-    }
-
-    private void addStrengthWorkout() throws GymException {
-        System.out.print("Enter ID: "); int id = scanner.nextInt();
-        System.out.print("Name: "); String name = scanner.next();
-        System.out.print("Duration (mins): "); int dur = scanner.nextInt();
-        System.out.print("Calories: "); int cal = scanner.nextInt();
-        System.out.print("Weight (kg): "); double weight = scanner.nextDouble();
-        System.out.print("Sets: "); int sets = scanner.nextInt();
-
-        StrengthWorkout sw = new StrengthWorkout(id, name, dur, cal, weight, sets);
-        workouts.add(sw);
-        sw.startSession();
-    }
-
-    private void viewAllWorkouts() {
-        for (Workout w : workouts) System.out.println(w.getDetails());
+    private void searchByName() {
+        System.out.print("Enter name: ");
+        String name = scanner.nextLine();
+        List<Member> result = dao.searchByName(name);
+        result.forEach(System.out::println);
     }
 }
+
