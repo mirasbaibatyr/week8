@@ -22,11 +22,6 @@ public class MenuManager {
                     4. Delete Member
                     5. Search Member by Name
                     6. View Member by ID
-                    7. Dummy Option
-                    8. Dummy Option
-                    9. Dummy Option
-                    10. Dummy Option
-                    11. Dummy Option
                     0. Exit
                     """);
 
