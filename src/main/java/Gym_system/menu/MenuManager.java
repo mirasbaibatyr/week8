@@ -15,7 +15,7 @@ public class MenuManager {
         while (true) {
             System.out.println("""
                     
-                    ===== GYM MENU (Week 8) =====
+                    ===== GYM MENU =====
                     1. Add Member
                     2. View All Members
                     3. Update Member
