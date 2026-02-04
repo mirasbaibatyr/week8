@@ -21,7 +21,7 @@ public class MenuManager {
                     3. Update Member
                     4. Delete Member
                     5. Search Member by Name
-                    6. View Member by ID
+                    6. Search Member by ID
                     0. Exit
                     """);
 
